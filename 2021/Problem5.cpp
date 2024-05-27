@@ -1,88 +1,146 @@
 #include <bits/stdc++.h>
 
-using namespace std;
+int sequence[150001];
+int segmentTree[150001 * 4]; //Generally a segment tree will never be larger than 4 times the size of the original array, read proof online if you're curious as to why
 
-const int Mxn = 150005, Mxm = 150005, Mxz = 21;
-int diff[Mxn][Mxz], ans[Mxn], st[Mxn * 4];
-array<int, 3> a[Mxm];
+//Build function for segment tree with 1 indexing
+void build (int i = 1, int treeleft = 1, int treeright = 150001){
 
-void build(int i = 1, int tl = 1, int tr = Mxn)
-{
-  if (tl == tr)
-  {
-    st[i] = ans[tl];
-  }
-  else
-  {
-    int mid = tl + (tr - tl) / 2;
-    build(i * 2, tl, mid);
-    build(i * 2 + 1, mid + 1, tr);
-    st[i] = __gcd(st[i * 2], st[i * 2 + 1]);
-  }
+    //When we encounter a leaf node
+    if (treeleft == treeright){
+
+        segmentTree[i] = sequence[treeleft];
+
+    }
+
+    else{
+
+        //Calculate midpoint, use int division to discard remainder
+        int mid = treeleft + (treeright - treeleft) / 2;
+        build (i * 2, treeleft, mid);
+        build (i * 2 + 1, mid + 1, treeright);
+        segmentTree[i] = std::gcd(segmentTree[i * 2], segmentTree[i * 2 + 1]);
+
+    }
+
 }
 
-int query(int l, int r, int i = 1, int tl = 1, int tr = Mxn)
-{
-  if (l > r)
-  {
+//Query function for segment tree
+int query (int left, int right, int i = 1, int treeleft = 1, int treeright = 150001){
+
+    //Out of range
+    if (left > right){
+        return 0;
+    }
+
+    //Segment of the tree is a part of the range
+    if (left == treeleft && right == treeright){
+        return segmentTree[i];
+    }
+    
+    //Calculate mid
+    int mid = treeleft + (treeright - treeleft) / 2;
+    
+    //If segment is partially in range, recurse deeper down the segment tree until corresponding nodes are found
+    //The min and max functions are important here to ensure that the proper range is being queried with each recurse
+    return std::gcd(query (left, std::min(mid, right), i * 2, treeleft, mid), query (std::max(mid + 1, left), right, i * 2 + 1, mid + 1, treeright));
+
+}
+
+int main(){
+
+    //Difference arrays, size 150002 because of 1 indexing and the final index padding as well
+    std::map<int, std::vector<int>> diffarrays;
+    diffarrays[1] = std::vector<int> (150002, 0);
+    diffarrays[2] = std::vector<int> (150002, 0);
+    diffarrays[3] = std::vector<int> (150002, 0);
+    diffarrays[4] = std::vector<int> (150002, 0);
+    diffarrays[5] = std::vector<int> (150002, 0);
+    diffarrays[6] = std::vector<int> (150002, 0);
+    diffarrays[7] = std::vector<int> (150002, 0);
+    diffarrays[8] = std::vector<int> (150002, 0);
+    diffarrays[9] = std::vector<int> (150002, 0);
+    diffarrays[10] = std::vector<int> (150002, 0);
+    diffarrays[11] = std::vector<int> (150002, 0);
+    diffarrays[12] = std::vector<int> (150002, 0);
+    diffarrays[13] = std::vector<int> (150002, 0);
+    diffarrays[14] = std::vector<int> (150002, 0);
+    diffarrays[15] = std::vector<int> (150002, 0);
+    diffarrays[16] = std::vector<int> (150002, 0);
+
+    //Main code
+    int N, M;
+
+    std::cin >> N >> M;
+
+    //For storing requirements
+    int x[150000];
+    int y[150000];
+    int z[150000];
+
+    //Collect requirements
+    for (int i = 0; i < M; i++){
+        std::cin >> x[i] >> y[i] >> z[i];
+
+        //Update difference array
+        diffarrays[z[i]][x[i]] += 1;
+        diffarrays[z[i]][y[i] + 1] -= 1;
+        
+    }
+
+    //Final iteration over difference arrays
+    int sum;
+    for (int i = 1; i <= 16; i++){
+
+        sum = 0;
+        
+        for (int j = 1; j <= 150000; j++){
+            sum += diffarrays[i][j];
+            diffarrays[i][j] = sum;
+        }
+
+    }
+
+
+    //Generate sequence
+    for (int i = 1; i <= N; i++){
+
+        //Determine LCM
+        int lcm = 1;
+        for (int z = 1; z <= 16; z++){
+
+            if (diffarrays[z][i] > 0){
+
+                //Formula of lowest common multiple of a, b is the absolute of (a * b) / gcd(a, b), in this case there's no negatives so I discard the absolute value part
+                lcm = lcm * z / std::gcd(lcm, z);
+
+            }
+
+        }
+
+        //Add to sequence
+        sequence[i] = lcm;
+
+    }
+
+    //Build segment tree
+    build();
+
+    //Check requirements via query function we created
+    for (int i = 0; i < M; i++){
+
+        //If GCD of range(x, y) != z
+        if (query(x[i], y[i]) != z[i]){
+            std::cout << "Impossible";
+            return 0;
+        }
+
+    }
+
+    //Output sequence
+    for (int i = 1; i <= N; i++){
+        std::cout << sequence[i] << ' ';
+    }
+
     return 0;
-  }
-  if (l == tl && r == tr)
-  {
-    return st[i];
-  }
-  int mid = tl + (tr - tl) / 2;
-  return __gcd(query(l, min(r, mid), i * 2, tl, mid),
-               query(max(l, mid + 1), r, i * 2 + 1, mid + 1, tr));
-}
-
-int main()
-{
-  ios::sync_with_stdio(false);
-  cin.tie(NULL);
-
-  int n, m;
-  cin >> n >> m;
-  for (int i = 0; i < m; i++)
-  {
-    int x, y, z;
-    cin >> x >> y >> z;
-    diff[x][z]++;
-    diff[y + 1][z]--;
-    a[i] = {x, y, z};
-  }
-
-  int d[Mxn];
-  for (int i = 1; i <= n; i++)
-  {
-    int lcm = 1;
-    for (int j = 1; j <= 16; j++)
-    {
-      d[j] += diff[i][j];
-      if (d[j] > 0)
-      {
-        lcm = lcm * j / __gcd(lcm, j);
-      }
-    }
-    ans[i] = lcm; // the ith element should be the lcm of all needed number
-  }
-
-  build();
-
-  for (int i = 0; i < m; i++)
-  {
-    tie(x, y, z) = a[i] if (query(x, y) != z)
-    {
-      cout << "Impossible\n";
-      return 0;
-    }
-  }
-
-  for (int i = 1; i <= n; i++)
-  {
-    cout << ans[i] << ' ';
-  }
-  cout << '\n';
-
-  return 0;
 }

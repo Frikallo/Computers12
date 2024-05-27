@@ -2,85 +2,124 @@
 
 using namespace std;
 
-#define read(x)                                                                   \
-    do                                                                            \
-    {                                                                             \
-        while ((x = getchar()) < '0')                                             \
-            ;                                                                     \
-        for (x -= '0'; '0' <= (_ = getchar()); x = (x << 3) + (x << 1) + _ - '0') \
-            ;                                                                     \
-    } while (0)
-char _;
-
-typedef long long ll;
-
-const int MAXN = 1e6 + 5;
-int N, K, a[MAXN], st[MAXN * 4];
-ll dp[MAXN];
-
-void build(int i = 1, int tl = 1, int tr = N)
-{
-    if (tl == tr)
-    {
-        st[i] = a[tl];
+namespace fast_io {
+    int read() {
+        int x = 0, f = 0; char ch = getchar();
+        while (!isdigit(ch)) f |= ch == '-', ch = getchar();
+        while (isdigit(ch)) x = 10 * x + ch - '0', ch = getchar();
+            return f ? -x : x;
     }
-    else
-    {
-        int mid = tl + (tr - tl) / 2;
-        build(i * 2, tl, mid);
-        build(i * 2 + 1, mid + 1, tr);
-        st[i] = max(st[i * 2], st[i * 2 + 1]);
+    void read(int& x) {x = read();}
+    template<typename T> void print(T x) {
+        if (x < 0) putchar('-'), x = -x;
+        if (x >= 10) print(x / 10);
+            putchar(x % 10 + '0');
+    }
+    template<typename T> void print(T x, char let) {
+        print(x), putchar(let);
     }
 }
+using namespace fast_io;
+using ll = __int128;
+const int N = 1e6 + 5;
+const ll INF = 1e15;
+const ll LLINF = 1e30;
+int n, k;
+ll a[N];
+vector<int> stk;
 
-int query(int l, int r, int i = 1, int tl = 1, int tr = N)
-{
-    if (l > r)
-    {
-        return 0;
+struct node {
+    ll dp, mx;
+    bool operator<(const node& other) const {
+        return dp + mx < other.dp + other.mx;
     }
-    if (l == tl && r == tr)
-    {
-        return st[i];
-    }
-    int mid = tl + (tr - tl) / 2;
-    return max(query(l, min(r, mid), i * 2, tl, mid),
-               query(max(l, mid + 1), r, i * 2 + 1, mid + 1, tr));
-}
+};
 
-int main()
-{
-    cin >> N >> K;
-    for (int i = 1; i <= N; i++)
-    {
-        cin >> a[i];
-    }
-    build();
-
-    int day = N / K + (N % K != 0);
-    int less = day * K - N;
-
-    dp[N] = 0;
-    for (int d = 1; d <= day; d++)
-    {
-        int lmin = N - K * d, rmin = min(N, lmin + K);
-        int r = min(N, rmin + less);
-
-        for (int l = lmin + less; l >= max(lmin, 0); l--)
-        {
-            r = min(r, l + K);
-
-            dp[l] = dp[r] + query(l + 1, r);
-            ll nxt;
-            while (r > rmin && (nxt = dp[r - 1] + query(l + 1, r - 1)) >= dp[l])
-            {
-                dp[l] = nxt;
-                r--;
-            }
+struct segtree {
+#define lc (rt << 1)
+#define rc (rt << 1 | 1)
+    node st[N << 2];
+    ll mn[N << 2], lazy[N << 2];
+    bool flag[N << 2];
+    void push_down(int rt) {
+        if(flag[rt]) {
+            lazy[lc] = lazy[rc] = lazy[rt];
+            st[lc].dp = mn[lc];
+            st[rc].dp = mn[rc];
+            st[lc].mx = st[rc].mx = lazy[rt];
+            flag[lc] = flag[rc] = 1;
+            flag[rt] = 0;
         }
     }
+    void push_up(int rt) {
+        st[rt] = max(st[lc], st[rc]);
+        mn[rt] = max(mn[lc], mn[rc]);
+    }
+    void build(int rt, int l, int r) {
+        if(l == r) {
+            st[rt].dp = st[rt].mx = -LLINF;
+            mn[rt] = -LLINF;
+            return;
+        }
+        int mid = l + r >> 1;
+        build(lc, l, mid);
+        build(rc, mid + 1, r);
+        push_up(rt);
+    }
+    void update(int rt, int l, int r, int pos, ll val) {
+        if(l == r) {
+            st[rt].dp = mn[rt] = val;
+            return;
+        }
+        int mid = l + r >> 1;
+        push_down(rt);
+        if(pos <= mid) update(lc, l, mid, pos, val);
+        else update(rc, mid + 1, r, pos, val);
+        push_up(rt);
+    }
+    void update(int rt, int l, int r, int x, int y, ll val) {
+        if(l == x && y == r) {
+            st[rt].dp = mn[rt];
+            st[rt].mx = val;
+            flag[rt] = 1;
+            lazy[rt] = val;
+            return;
+        }
+        int mid = l + r >> 1;
+        push_down(rt);
+        if(y <= mid) update(lc, l, mid, x, y, val);
+        else if(x > mid) update(rc, mid + 1, r, x, y, val);
+        else update(lc, l, mid, x, mid, val), update(rc, mid + 1, r, mid + 1, y, val);
+        push_up(rt);
+    }
+    node query(int rt, int l, int r, int x, int y) {
+        if(l == x && y == r) return st[rt];
+        int mid = l + r >> 1;
+        push_down(rt);
+        if(y <= mid) return query(lc, l, mid, x, y);
+        else if(x > mid) return query(rc, mid + 1, r, x, y);
+        else return max(query(lc, l, mid, x, mid), query(rc, mid + 1, r, mid + 1, y));
+    }
+} st;
 
-    cout << dp[0] << endl;
-
+int main() {
+#ifdef LOCAL
+    freopen("in.txt", "r", stdin);
+    freopen("out.txt", "w", stdout);
+#endif
+    read(n), read(k);
+    st.build(1, 0, n);
+    st.update(1, 0, n, 0, 0);
+    for(int i = 1;i<=n;++i) {
+        a[i] = read() - INF;
+        while(!stk.empty() && a[stk.back()] < a[i]) stk.pop_back();
+        int mx = stk.empty() ? 0 : stk.back();
+        st.update(1, 0, n, mx, i - 1, a[i]);
+        node dp = st.query(1, 0, n, max(0, i - k), i - 1);
+        st.update(1, 0, n, i, dp.dp + dp.mx);
+        stk.push_back(i);
+    }
+    ll day = (n - 1) / k + 1;
+    print(st.query(1, 0, n, n, n).dp + day * INF, '\n');
     return 0;
 }
