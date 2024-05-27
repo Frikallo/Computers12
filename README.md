@@ -18,7 +18,7 @@ todo:
 - [x] Problem S1 [Source](./2011/Problem1.cpp)
 - [x] Problem S2 [Source](./2011/Problem2.cpp)
 - [x] Problem S3 [Source](./2011/Problem3.cpp)
-- [x] Problem S4 [Source](./2011/Problem4.cpp)
+- [ ] Problem S4 [Source](./2011/Problem4.cpp)          **DOES NOT WORK**
 - [x] Problem S5 [Source](./2011/Problem5.cpp)
 4. **2015**
 - [x] Problem S1 [Source](./2015/Problem1.cpp)
@@ -48,17 +48,17 @@ todo:
 - [ ] Problem S1 ~~[Source](./2019/Problem1.cpp)~~
 - [x] Problem S2 [Source](./2019/Problem2.cpp)
 - [x] Problem S3 [Source](./2019/Problem3.cpp)
-- [x] Problem S4 [Source](./2019/Problem4.cpp)
-- [x] Problem S5 [Source](./2019/Problem5.cpp)
+- [ ] Problem S4 [Source](./2019/Problem4.cpp)          **DOES NOT WORK**
+- [ ] Problem S5 [Source](./2019/Problem5.cpp)          **DOES NOT WORK**
 9. **2020**
 - [x] Problem S1 [Source](./2020/Problem1.cpp)
 - [x] Problem S2 [Source](./2020/Problem2.cpp)
 - [x] Problem S3 [Source](./2020/Problem3.cpp)
-- [x] Problem S4 [Source](./2020/Problem4.cpp)
+- [ ] Problem S4 [Source](./2020/Problem4.cpp)          **DOES NOT WORK**
 - [x] Problem S5 [Source](./2020/Problem5.cpp)
 10. **2021**
 - [x] Problem S1 [Source](./2021/Problem1.cpp)
 - [ ] Problem S2 ~~[Source](./2021/Problem2.cpp)~~
 - [x] Problem S3 [Source](./2021/Problem3.cpp)
-- [x] Problem S4 [Source](./2021/Problem4.cpp)
-- [x] Problem S5 [Source](./2021/Problem5.cpp)
+- [ ] Problem S4 [Source](./2021/Problem4.cpp)          **DOES NOT WORK**
+- [ ] Problem S5 [Source](./2021/Problem5.cpp)          **DOES NOT WORK**
