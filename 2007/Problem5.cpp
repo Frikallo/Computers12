@@ -27,7 +27,7 @@ int main(){
             blocks[0] += pins[i];
         }
 
-        //Use rolling window, aka remove leftmost add right most
+        //Use rolling window
         for (int i = 1; i < n; i++){
             blocks[i] = blocks[i - 1] - pins[i - 1];
             if (i + w - 1 < n){
@@ -35,7 +35,7 @@ int main(){
             }
         }
 
-        //Memset dp
+        //DP
         memset(dp, 0, sizeof(dp));
 
         for (int i = 1; i <= k; i++){
@@ -51,7 +51,6 @@ int main(){
             }
         }
 
-        //Answer is found at dp[k][0] since we've used all k balls and we're viewing the max from index 0 to the end of the line
         cout << dp[k][0] << '\n';
         
     }

@@ -8,7 +8,6 @@ const int NODES = 18; //Number of nodes, 8 blood units, 8 blood patients, source
 const int source = 0; //Index of source
 const int sink = 17; //Index of sink
 
-//Our graph, we're storing it as a NxN matrix with graph[i][j] telling us the amount of flow from the edge starting from i connecting to j
 vector<vector<int>> graph (NODES, vector<int> (NODES, 0));
 
 //To send flow throughout the graph recursively
@@ -100,8 +99,7 @@ int main(){
     }
     
 
-    //Dinic's algorithm begin
-
+    //Dinic's algorithm
     int maxBlood = 0;
 
     while (true){
@@ -111,7 +109,7 @@ int main(){
         queue<int> q;
         q.push(0); visited[0] = true; level[0] = 0;
 
-        //Construct level graph
+        //Construct graph
         while (!q.empty()){
 
             int current = q.front(); q.pop();
@@ -129,7 +127,7 @@ int main(){
 
         if (level[17] == INF) break; //If sink could not be reached
 
-        //Repeatedly perform dfs until all edges have been saturated
+        //Repeat until all edges are saturated
         while (int flow = dfs(graph, level, source, sink, INF)){
             maxBlood += flow;
         }

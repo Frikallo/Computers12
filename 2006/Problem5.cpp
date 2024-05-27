@@ -68,7 +68,6 @@ int main(){
 
     cin >> m >> n >> a >> b >> c;
 
-    //Get decimal of starting node
     int start = 0;
     int powOf2 = 1;
     for (int i = 0; i < m; i++){
@@ -86,7 +85,6 @@ int main(){
     //Generate graph
     for (int i = 0; i <= pow(2, m * n); i++){
         findNextGen(i);
-        //;
     }
 
     //BFS
@@ -96,15 +94,9 @@ int main(){
     q.push(start);
     visited[start] = true;
 
-    //DEBUGGING
-    //for (auto& prev: previous[start]){
-    //        cout << prev << ' ';
-    //}
-
     int steps = 0;
     while (!q.empty()){
         int curr = q.front(); q.pop();
-        //If garden of eden
         if (previous[curr].size() == 0){
             cout << distance[curr] << '\n';
             return 0;
@@ -116,7 +108,6 @@ int main(){
                 visited[prev] = true;
             }
         }
-        //funny cheat, basically if it takes more than 50 nodes, then theres no garden of eden
         steps++;
         if (steps == 50){
             cout << -1 << '\n';

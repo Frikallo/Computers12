@@ -21,7 +21,7 @@ ll solve(int n)
   for (int k = n, m, j; k > 1; k = j)
   {
     m = n / k, j = n / (m + 1);
-    ans += solve(m) * (k - j); // (k - j) subtrees with weight m
+    ans += solve(m) * (k - j);
   }
   return memo[n] = ans;
 }

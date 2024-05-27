@@ -2,25 +2,7 @@
 
 using namespace std;
 
-namespace fast_io {
-    int read() {
-        int x = 0, f = 0; char ch = getchar();
-        while (!isdigit(ch)) f |= ch == '-', ch = getchar();
-        while (isdigit(ch)) x = 10 * x + ch - '0', ch = getchar();
-            return f ? -x : x;
-    }
-    void read(int& x) {x = read();}
-    template<typename T> void print(T x) {
-        if (x < 0) putchar('-'), x = -x;
-        if (x >= 10) print(x / 10);
-            putchar(x % 10 + '0');
-    }
-    template<typename T> void print(T x, char let) {
-        print(x), putchar(let);
-    }
-}
-using namespace fast_io;
-using ll = __int128;
+typedef __int128 ll; // long long is not enough for this problem, took me a while to figure this out but you need to use __int128
 const int N = 1e6 + 5;
 const ll INF = 1e15;
 const ll LLINF = 1e30;
@@ -102,16 +84,46 @@ struct segtree {
     }
 } st;
 
+ll string_to_ll(const std::string& str) {
+    ll result = 0;
+    for (char c : str) {
+        if (c >= '0' && c <= '9') {
+            result = result * 10 + (c - '0');
+        }
+    }
+    return result;
+}
+
+std::string ll_to_string(ll value) {
+    std::string str;
+    bool negative = false;
+    if (value < 0) {
+        negative = true;
+        value = -value;
+    }
+
+    do {
+        str.push_back('0' + (value % 10));
+        value /= 10;
+    } while (value != 0);
+
+    if (negative) {
+        str.push_back('-');
+    }
+
+    std::reverse(str.begin(), str.end());
+    return str;
+}
+
 int main() {
-#ifdef LOCAL
-    freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-#endif
-    read(n), read(k);
+    cin >> n >> k;
     st.build(1, 0, n);
     st.update(1, 0, n, 0, 0);
     for(int i = 1;i<=n;++i) {
-        a[i] = read() - INF;
+        string x;
+        cin >> x;
+        ll x_ll = string_to_ll(x);
+        a[i] = x_ll - INF;
         while(!stk.empty() && a[stk.back()] < a[i]) stk.pop_back();
         int mx = stk.empty() ? 0 : stk.back();
         st.update(1, 0, n, mx, i - 1, a[i]);
@@ -120,6 +132,8 @@ int main() {
         stk.push_back(i);
     }
     ll day = (n - 1) / k + 1;
-    print(st.query(1, 0, n, n, n).dp + day * INF, '\n');
+    ll ans = st.query(1, 0, n, n, n).dp + day * INF;
+    string ans_str = ll_to_string(ans);
+    cout << ans_str << endl;
     return 0;
 }

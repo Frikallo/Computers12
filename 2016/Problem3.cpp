@@ -65,12 +65,6 @@ int main()
 
   pho_diameter(start, -1);
 
-  // all pho resturants are connected.
-  // Regard it as a new graph.
-  // `n` resturants are connected with `n-1` edges
-  // each edge will be passed twice except for the diamemter of this new graph,
-  // because we can pass this diameter, and visited other restaurants in the process
-  // when we are at the closest point to those restaurants.
   int pho = accumulate(ispho, ispho + N, 0);
   int ans = 2 * (pho - 1) - max_diam;
   cout << ans << endl;
