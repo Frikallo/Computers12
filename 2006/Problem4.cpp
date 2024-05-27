@@ -1,22 +1,24 @@
 #include <bits/stdc++.h>
 
+using namespace std;
+
 int main(){
 
     while (true){
 
         //Get vector size, if 0 terminate
-        int n; std::cin >> n;
+        int n; cin >> n;
 
         if (n == 0){
             break;
         }
 
         //Create group
-        std::vector<std::vector<int>> group (n, std::vector<int> (n));
+        vector<vector<int>> group (n, vector<int> (n));
 
         for (int i = 0; i < n; i++){
             for (int j = 0; j < n; j++){
-                std::cin >> group[i][j];
+                cin >> group[i][j];
             }
         }
 
@@ -54,7 +56,7 @@ int main(){
 
         //If no identity, the group is impossible
         if (identity == -1){
-            std::cout << "no\n";
+            cout << "no\n";
             continue;
         }
 
@@ -86,7 +88,7 @@ int main(){
         }
 
         if (!inverseCheck){
-            std::cout << "no\n";
+            cout << "no\n";
             continue;
         }
 
@@ -112,11 +114,11 @@ int main(){
         }
 
         if (!good){
-            std::cout << "no\n";
+            cout << "no\n";
             continue;
         }
 
-        std::cout << "yes\n";
+        cout << "yes\n";
 
     }
 

@@ -1,27 +1,29 @@
 #include <bits/stdc++.h>
 
+using namespace std;
+
 int main() {
     int n;
-    std::cin >> n;
-    std::vector<int> boxes_l, boxes_w, boxes_h;
+    cin >> n;
+    vector<int> boxes_l, boxes_w, boxes_h;
     for ( int i=0; i < n; ++i ) {
         int l0, w0, h0;
-        std::cin >> l0 >> w0 >> h0;
+        cin >> l0 >> w0 >> h0;
         boxes_l.push_back(l0);
         boxes_w.push_back(w0);
         boxes_h.push_back(h0);
     }
     int m;
-    std::cin >> m;
-    std::vector<int> parcels_l, parcels_w, parcels_h;
+    cin >> m;
+    vector<int> parcels_l, parcels_w, parcels_h;
     for ( int i=0; i < m; ++i ) {
         int l1, w1, h1;
-        std::cin >> l1 >> w1 >> h1;
+        cin >> l1 >> w1 >> h1;
         parcels_l.push_back(l1);
         parcels_w.push_back(w1);
         parcels_h.push_back(h1);
     }
-    std::vector<int> boxes;
+    vector<int> boxes;
     for ( int i=0; i < n; ++i ) {
         int l0 = boxes_l[i];
         int w0 = boxes_w[i];
@@ -51,9 +53,9 @@ int main() {
             }
         }
         if ( min_box == -1 ) {
-            std::cout << "Item does not fit." << std::endl;
+            cout << "Item does not fit." << endl;
         } else {
-            std::cout << boxes[min_box] << std::endl;
+            cout << boxes[min_box] << endl;
         }
     }
     return 0;

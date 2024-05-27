@@ -1,8 +1,10 @@
 #include <bits/stdc++.h>
 
+using namespace std;
+
 #define INF 2147483647
-#define vi std::vector<int>
-#define vvi std::vector<std::vector<int>>
+#define vi vector<int>
+#define vvi vector<vector<int>>
 
 const int blockLength = 388;
 
@@ -14,23 +16,23 @@ struct block{
 };
 
 //Split entire train line, into smaller blocks
-std::vector<block> blocks (blockLength + 1);
+vector<block> blocks (blockLength + 1);
 
 int main(){
 
     int N, M, Q;
-    std::cin >> N >> M >> Q;
+    cin >> N >> M >> Q;
 
     vi trainToLine (150001); //trainToLine[i] tells us what line, train i is apart of
     for (int i = 1; i <= N; i++){
-       std::cin >> trainToLine[i]; 
+       cin >> trainToLine[i]; 
     }
 
     vvi lines (150001); //2-D array, lines[i][j] tells us the amount of people originally at station j in line i
     vi posInLine (150001); //posInLine[i] tells us the position of station i in their respective line
     for (int i = 1; i <= N; i++){
 
-        int ppl; std::cin >> ppl;
+        int ppl; cin >> ppl;
 
         //Add people to their respective block
         blocks[i / blockLength].totalPeople += ppl;
@@ -38,7 +40,7 @@ int main(){
         lines[trainToLine[i]].push_back(ppl); //Push people to line
 
         //Update index of left most station of their line 
-        blocks[i / blockLength].left[trainToLine[i]] = std::min(blocks[i / blockLength].left[trainToLine[i]], (int)lines[trainToLine[i]].size() - 1);
+        blocks[i / blockLength].left[trainToLine[i]] = min(blocks[i / blockLength].left[trainToLine[i]], (int)lines[trainToLine[i]].size() - 1);
         
         //Update rightmost station of the line
         blocks[i / blockLength].right[trainToLine[i]] = (int)lines[trainToLine[i]].size() - 1;
@@ -53,12 +55,12 @@ int main(){
     while (Q--){
 
         int option;
-        std::cin >> option;
+        cin >> option;
 
         //Survey
         if (option == 1){
             int left, right;
-            std::cin >> left >> right;
+            cin >> left >> right;
             int survey = 0;
             for (int i = left; i <= right; ){
 
@@ -77,14 +79,14 @@ int main(){
                 
             }
 
-            std::cout << survey << '\n';
+            cout << survey << '\n';
             
         }
 
         //Run line
         else{
             int line;
-            std::cin >> line;
+            cin >> line;
 
             int lineSize = lines[line].size();
             

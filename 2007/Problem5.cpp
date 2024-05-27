@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 
+using namespace std;
+
 int n, k, w;
 int dp[501][30000];
 int blocks [30000];
@@ -7,15 +9,15 @@ int blocks [30000];
 int main(){
 
     int t;
-    std::cin >> t;
+    cin >> t;
 
     while (t--){
    
-        std::cin >> n >> k >> w;
+        cin >> n >> k >> w;
 
         int pins [n]; int total = 0;
         for (int i = 0; i < n; i++){
-            std::cin >> pins[i];
+            cin >> pins[i];
             total += pins[i];
         }
 
@@ -44,13 +46,13 @@ int main(){
                 }
                 //Otherwise, the usual logic
                 else{
-                    dp[i][j] = std::max(dp[i - 1][j + w] + blocks[j], dp[i][j + 1]);
+                    dp[i][j] = max(dp[i - 1][j + w] + blocks[j], dp[i][j + 1]);
                 }
             }
         }
 
         //Answer is found at dp[k][0] since we've used all k balls and we're viewing the max from index 0 to the end of the line
-        std::cout << dp[k][0] << '\n';
+        cout << dp[k][0] << '\n';
         
     }
     

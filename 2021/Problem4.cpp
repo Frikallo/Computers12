@@ -1,25 +1,28 @@
 #include <bits/stdc++.h>
+
+using namespace std;
+
 #define INFINITY 100000000
 
 int main(){
 
     int N, W, D;
-    std::cin >> N >> W >> D;
+    cin >> N >> W >> D;
 
-    std::vector<int> walkways[N + 1]; //array of vectors, walkways[n] is a vector containing all connecting stations to station n
+    vector<int> walkways[N + 1]; //array of vectors, walkways[n] is a vector containing all connecting stations to station n
 
     for (int i = 0; i < W; i++){
         int start, stop;
-        std::cin >> start >> stop;
+        cin >> start >> stop;
         walkways[stop].push_back(start); //Append in reverse for the breadth first search
     }
 
     //Calculate walking time from station i to station N
     //Breadth First Search
 
-    std::queue<int> stack;
-    std::vector<bool> alreadyvisited(N + 1, false); //to prevent revisiting the same node
-    std::vector<int> walkwaytimes(N + 1, INFINITY); //INF to help us sort our multiset later, indicates there's no possible walkway
+    queue<int> stack;
+    vector<bool> alreadyvisited(N + 1, false); //to prevent revisiting the same node
+    vector<int> walkwaytimes(N + 1, INFINITY); //INF to help us sort our multiset later, indicates there's no possible walkway
     walkwaytimes[N] = 0;
     alreadyvisited[N] = 1;
     stack.push(N);
@@ -44,13 +47,13 @@ int main(){
     }
 
     //Calculate initial time for subway route
-    std::vector<int> subwayroute(N + 1);
+    vector<int> subwayroute(N + 1);
     //indices don't matter for this problem as we're only searching for the minimum time, making multiset extremely useful here as it sorts the times and allows for quick erasing and insertion of elements
-    std::multiset<int> cumulativeTime; 
+    multiset<int> cumulativeTime; 
     subwayroute[0] = 0; //Dummy value
 
     for (int i = 1; i < N + 1; i++){
-        std::cin >> subwayroute[i];
+        cin >> subwayroute[i];
         cumulativeTime.insert(i - 1 + walkwaytimes[subwayroute[i]]); //calculate cumulative time = subway to station i + walking distance from i to N
     }
 
@@ -59,7 +62,7 @@ int main(){
     //Determining minimum time each day
     for (int d = 0; d < D; d++){
         int changes1, changes2;
-        std::cin >> changes1 >> changes2;
+        cin >> changes1 >> changes2;
 
         //Erase previous times for swapped stations that are to be swapped
         value = changes1 - 1 + walkwaytimes[subwayroute[changes1]];
@@ -77,7 +80,7 @@ int main(){
         cumulativeTime.insert(changes1 - 1 + walkwaytimes[subwayroute[changes1]]);
         cumulativeTime.insert(changes2 - 1 + walkwaytimes[subwayroute[changes2]]);
 
-        std::cout << *cumulativeTime.begin() << '\n'; //multiset is always ordered meaning the minimum time is always at the front
+        cout << *cumulativeTime.begin() << '\n'; //multiset is always ordered meaning the minimum time is always at the front
     }
 
     return 0;

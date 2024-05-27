@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 
-std::vector<std::vector<int>> triangle; //Our original triangle, note that as we run solve(), it will overwrite the actual values of this triangle
+using namespace std;
+
+vector<vector<int>> triangle; //Our original triangle, note that as we run solve(), it will overwrite the actual values of this triangle
 
 //subtriangle_size is the size of the current triangle we're trying to solve for
 void solve(int subtriangle_size){
@@ -27,7 +29,7 @@ void solve(int subtriangle_size){
             //The first top subtriangle has the same head as the current triangle, the bottom left subtriangle has its head at i + subtriangle_size - subsize
             //Lastly, the bottom right subtriangle is located at [i + subtriangle_size - subsize][j + subtriangle_size - subsize]
             //If you don't believe me, try this on paper
-            triangle[i][j] = std::max(triangle[i][j], std::max(triangle[i + subtriangle_size - subsize][j], triangle[i + subtriangle_size - subsize][j + subtriangle_size - subsize]));
+            triangle[i][j] = max(triangle[i][j], max(triangle[i + subtriangle_size - subsize][j], triangle[i + subtriangle_size - subsize][j + subtriangle_size - subsize]));
         }   
     }
     
@@ -61,7 +63,7 @@ int main(){
         }
     }
     
-    std::cout << sum << '\n';
+    cout << sum << '\n';
     
     return 0;
   

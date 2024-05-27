@@ -1,8 +1,10 @@
 #include <bits/stdc++.h>
 
+using namespace std;
+
 int main() {
     int n;
-    std::cin >> n;
+    cin >> n;
 
     int electionYear, electionMonth, electionDay;
     electionYear = 2007;
@@ -11,22 +13,22 @@ int main() {
 
     for (int i = 0; i < n; i++) {
         int year, month, day;
-        std::cin >> year >> month >> day;
+        cin >> year >> month >> day;
         int age = electionYear - year;
         if (age > 18) {
-            std::cout << "Yes" << std::endl;
+            cout << "Yes" << endl;
         } else if (age < 18) {
-            std::cout << "No" << std::endl;
+            cout << "No" << endl;
         } else {
             if (month < electionMonth) {
-                std::cout << "Yes" << std::endl;
+                cout << "Yes" << endl;
             } else if (month > electionMonth) {
-                std::cout << "No" << std::endl;
+                cout << "No" << endl;
             } else {
                 if (day <= electionDay) {
-                    std::cout << "Yes" << std::endl;
+                    cout << "Yes" << endl;
                 } else {
-                    std::cout << "No" << std::endl;
+                    cout << "No" << endl;
                 }
             }
         }

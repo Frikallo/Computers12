@@ -1,8 +1,10 @@
 #include <bits/stdc++.h>
 
+using namespace std;
+
 int m, n, a, b, c;
 
-std::vector<int> previous [1048576 + 1];
+vector<int> previous [1048576 + 1];
 
 //Find next generation given an arrangement
 void findNextGen(int binary){
@@ -64,7 +66,7 @@ void findNextGen(int binary){
 
 int main(){
 
-    std::cin >> m >> n >> a >> b >> c;
+    cin >> m >> n >> a >> b >> c;
 
     //Get decimal of starting node
     int start = 0;
@@ -72,7 +74,7 @@ int main(){
     for (int i = 0; i < m; i++){
         for (int j = 0; j < n; j++){
             char x;
-            std::cin >> x;
+            cin >> x;
             //Cell is alive
             if (x == '*'){
                 start += powOf2;
@@ -88,15 +90,15 @@ int main(){
     }
 
     //BFS
-    std::vector<int> visited (1048576 + 1, 0);
-    std::vector<int> distance (1048576 + 1, 0);
-    std::queue<int> q;
+    vector<int> visited (1048576 + 1, 0);
+    vector<int> distance (1048576 + 1, 0);
+    queue<int> q;
     q.push(start);
     visited[start] = true;
 
     //DEBUGGING
     //for (auto& prev: previous[start]){
-    //        std::cout << prev << ' ';
+    //        cout << prev << ' ';
     //}
 
     int steps = 0;
@@ -104,7 +106,7 @@ int main(){
         int curr = q.front(); q.pop();
         //If garden of eden
         if (previous[curr].size() == 0){
-            std::cout << distance[curr] << '\n';
+            cout << distance[curr] << '\n';
             return 0;
         }
         for (auto& prev: previous[curr]){
@@ -117,12 +119,12 @@ int main(){
         //funny cheat, basically if it takes more than 50 nodes, then theres no garden of eden
         steps++;
         if (steps == 50){
-            std::cout << -1 << '\n';
+            cout << -1 << '\n';
             return 0;
         }
     }
 
-    std::cout << -1 << '\n';
+    cout << -1 << '\n';
     
     return 0;
     

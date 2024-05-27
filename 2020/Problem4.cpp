@@ -1,9 +1,11 @@
 #include <bits/stdc++.h>
 
+using namespace std;
+
 int main(){
 
-    std::string table; //Represent table
-    std::cin >> table;
+    string table; //Represent table
+    cin >> table;
 
     int table_size = table.size();
 
@@ -32,9 +34,9 @@ int main(){
 
     //Our sections, the key is the letter in that section and the corresponding value is the frequency of that letter
     //For example sectionA['A'] == 5 means that there are 5 A's in section A
-    std::map<char, int> sectionA;
-    std::map<char, int> sectionB;
-    std::map<char, int> sectionC;
+    map<char, int> sectionA;
+    map<char, int> sectionB;
+    map<char, int> sectionC;
 
     sectionA['A'] = 0, sectionA['B'] = 0, sectionA['C'] = 0;
     sectionB['A'] = 0, sectionB['B'] = 0, sectionB['C'] = 0;
@@ -64,8 +66,8 @@ int main(){
     }
 
     //Calculate minimum number of swaps for initial arrangement (no offset)
-    int num_of_swaps = sectionA['B'] + sectionA['C'] + sectionB['A'] + sectionB['C'] - std::min(sectionA['B'], sectionB['A']);
-    std::set<int> swaps; //I will just be inserting all values into a set, sets are ordered therefore at the end I will print the minimum value of the set
+    int num_of_swaps = sectionA['B'] + sectionA['C'] + sectionB['A'] + sectionB['C'] - min(sectionA['B'], sectionB['A']);
+    set<int> swaps; //I will just be inserting all values into a set, sets are ordered therefore at the end I will print the minimum value of the set
     swaps.insert(num_of_swaps);
 
     //Rolling window begin
@@ -79,7 +81,7 @@ int main(){
         sectionC[table[i + countA + countB + countC]]++; //Add to section C
 
         //Calculate minimum number of swaps for this particular arrangement and positioning
-        num_of_swaps = sectionA['B'] + sectionA['C'] + sectionB['A'] + sectionB['C'] - std::min(sectionA['B'], sectionB['A']);
+        num_of_swaps = sectionA['B'] + sectionA['C'] + sectionB['A'] + sectionB['C'] - min(sectionA['B'], sectionB['A']);
         swaps.insert(num_of_swaps);
 
     }
@@ -116,7 +118,7 @@ int main(){
 
     }
 
-    num_of_swaps = sectionA['B'] + sectionA['C'] + sectionB['A'] + sectionB['C'] - std::min(sectionA['B'], sectionB['A']);
+    num_of_swaps = sectionA['B'] + sectionA['C'] + sectionB['A'] + sectionB['C'] - min(sectionA['B'], sectionB['A']);
     swaps.insert(num_of_swaps);
 
     //Rolling window once again
@@ -129,13 +131,13 @@ int main(){
         sectionA[table[i + countC + countB]]--; //Remove first part of section A
         sectionA[table[i + countC + countB + countA]]++; //Add to section A
 
-        num_of_swaps = sectionA['B'] + sectionA['C'] + sectionB['A'] + sectionB['C'] - std::min(sectionA['B'], sectionB['A']);
+        num_of_swaps = sectionA['B'] + sectionA['C'] + sectionB['A'] + sectionB['C'] - min(sectionA['B'], sectionB['A']);
         swaps.insert(num_of_swaps);
 
     }
 
     //Output minimum number of swaps
-    std::cout << *swaps.begin();
+    cout << *swaps.begin();
 
     return 0;
 

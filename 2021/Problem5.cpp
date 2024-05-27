@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 
+using namespace std;
+
 int sequence[150001];
 int segmentTree[150001 * 4]; //Generally a segment tree will never be larger than 4 times the size of the original array, read proof online if you're curious as to why
 
@@ -19,7 +21,7 @@ void build (int i = 1, int treeleft = 1, int treeright = 150001){
         int mid = treeleft + (treeright - treeleft) / 2;
         build (i * 2, treeleft, mid);
         build (i * 2 + 1, mid + 1, treeright);
-        segmentTree[i] = std::gcd(segmentTree[i * 2], segmentTree[i * 2 + 1]);
+        segmentTree[i] = gcd(segmentTree[i * 2], segmentTree[i * 2 + 1]);
 
     }
 
@@ -43,35 +45,35 @@ int query (int left, int right, int i = 1, int treeleft = 1, int treeright = 150
     
     //If segment is partially in range, recurse deeper down the segment tree until corresponding nodes are found
     //The min and max functions are important here to ensure that the proper range is being queried with each recurse
-    return std::gcd(query (left, std::min(mid, right), i * 2, treeleft, mid), query (std::max(mid + 1, left), right, i * 2 + 1, mid + 1, treeright));
+    return gcd(query (left, min(mid, right), i * 2, treeleft, mid), query (max(mid + 1, left), right, i * 2 + 1, mid + 1, treeright));
 
 }
 
 int main(){
 
     //Difference arrays, size 150002 because of 1 indexing and the final index padding as well
-    std::map<int, std::vector<int>> diffarrays;
-    diffarrays[1] = std::vector<int> (150002, 0);
-    diffarrays[2] = std::vector<int> (150002, 0);
-    diffarrays[3] = std::vector<int> (150002, 0);
-    diffarrays[4] = std::vector<int> (150002, 0);
-    diffarrays[5] = std::vector<int> (150002, 0);
-    diffarrays[6] = std::vector<int> (150002, 0);
-    diffarrays[7] = std::vector<int> (150002, 0);
-    diffarrays[8] = std::vector<int> (150002, 0);
-    diffarrays[9] = std::vector<int> (150002, 0);
-    diffarrays[10] = std::vector<int> (150002, 0);
-    diffarrays[11] = std::vector<int> (150002, 0);
-    diffarrays[12] = std::vector<int> (150002, 0);
-    diffarrays[13] = std::vector<int> (150002, 0);
-    diffarrays[14] = std::vector<int> (150002, 0);
-    diffarrays[15] = std::vector<int> (150002, 0);
-    diffarrays[16] = std::vector<int> (150002, 0);
+    map<int, vector<int>> diffarrays;
+    diffarrays[1] = vector<int> (150002, 0);
+    diffarrays[2] = vector<int> (150002, 0);
+    diffarrays[3] = vector<int> (150002, 0);
+    diffarrays[4] = vector<int> (150002, 0);
+    diffarrays[5] = vector<int> (150002, 0);
+    diffarrays[6] = vector<int> (150002, 0);
+    diffarrays[7] = vector<int> (150002, 0);
+    diffarrays[8] = vector<int> (150002, 0);
+    diffarrays[9] = vector<int> (150002, 0);
+    diffarrays[10] = vector<int> (150002, 0);
+    diffarrays[11] = vector<int> (150002, 0);
+    diffarrays[12] = vector<int> (150002, 0);
+    diffarrays[13] = vector<int> (150002, 0);
+    diffarrays[14] = vector<int> (150002, 0);
+    diffarrays[15] = vector<int> (150002, 0);
+    diffarrays[16] = vector<int> (150002, 0);
 
     //Main code
     int N, M;
 
-    std::cin >> N >> M;
+    cin >> N >> M;
 
     //For storing requirements
     int x[150000];
@@ -80,7 +82,7 @@ int main(){
 
     //Collect requirements
     for (int i = 0; i < M; i++){
-        std::cin >> x[i] >> y[i] >> z[i];
+        cin >> x[i] >> y[i] >> z[i];
 
         //Update difference array
         diffarrays[z[i]][x[i]] += 1;
@@ -112,7 +114,7 @@ int main(){
             if (diffarrays[z][i] > 0){
 
                 //Formula of lowest common multiple of a, b is the absolute of (a * b) / gcd(a, b), in this case there's no negatives so I discard the absolute value part
-                lcm = lcm * z / std::gcd(lcm, z);
+                lcm = lcm * z / gcd(lcm, z);
 
             }
 
@@ -131,7 +133,7 @@ int main(){
 
         //If GCD of range(x, y) != z
         if (query(x[i], y[i]) != z[i]){
-            std::cout << "Impossible";
+            cout << "Impossible";
             return 0;
         }
 
@@ -139,7 +141,7 @@ int main(){
 
     //Output sequence
     for (int i = 1; i <= N; i++){
-        std::cout << sequence[i] << ' ';
+        cout << sequence[i] << ' ';
     }
 
     return 0;

@@ -1,22 +1,24 @@
 #include <bits/stdc++.h>
 
+using namespace std;
+
 int main(){
     
     //Collect input
     int M, N, K;
 
-    std::cin >> M >> N >> K;
+    cin >> M >> N >> K;
 
     //Initialize vectors containing information as to how many times row[i] or column[i] has been painted over
-    std::vector<int> row(M + 1, 0);
-    std::vector<int> column(N + 1, 0);
+    vector<int> row(M + 1, 0);
+    vector<int> column(N + 1, 0);
 
     char instruction; //Storing whether the painter chooses a row or a column
     int num; //Storing row or column number
 
     for (int i = 0; i < K; i++){
         
-        std::cin >> instruction >> num;
+        cin >> instruction >> num;
 
         if (instruction == 'R'){
 
@@ -47,7 +49,7 @@ int main(){
 
     }
 
-    std::cout << gold;
+    cout << gold;
 
     return 0; 
 }

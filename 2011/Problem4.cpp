@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 
+using namespace std;
+
 #define INF 2147483647
 
 const int NODES = 18; //Number of nodes, 8 blood units, 8 blood patients, source + sink
@@ -7,10 +9,10 @@ const int source = 0; //Index of source
 const int sink = 17; //Index of sink
 
 //Our graph, we're storing it as a NxN matrix with graph[i][j] telling us the amount of flow from the edge starting from i connecting to j
-std::vector<std::vector<int>> graph (NODES, std::vector<int> (NODES, 0));
+vector<vector<int>> graph (NODES, vector<int> (NODES, 0));
 
 //To send flow throughout the graph recursively
-int dfs(std::vector<std::vector<int>>& graph, std::vector<int>& level, int currentNode, int sink, int flow){
+int dfs(vector<vector<int>>& graph, vector<int>& level, int currentNode, int sink, int flow){
 
     //If we made it to the end of the graph, aka the sink
     if (currentNode == sink){
@@ -27,7 +29,7 @@ int dfs(std::vector<std::vector<int>>& graph, std::vector<int>& level, int curre
             if (level[i] == level[currentNode] + 1){
 
                 //Update bottleneck
-                int current_flow = std::min(flow, graph[currentNode][i]);
+                int current_flow = min(flow, graph[currentNode][i]);
 
                 int bottleneck = dfs(graph, level, i, sink, current_flow);
 
@@ -54,7 +56,7 @@ int main(){
 
     //Connect source to blood units
     for (int i = 1; i <= 8; i++){
-        int units; std::cin >> units;
+        int units; cin >> units;
         graph[0][i] = units;
     }
 
@@ -93,7 +95,7 @@ int main(){
 
     //Connect patients to tap
     for (int i = 9; i <= 16; i++){
-        int patients; std::cin >> patients;
+        int patients; cin >> patients;
         graph[i][17] = patients;
     }
     
@@ -104,9 +106,9 @@ int main(){
 
     while (true){
 
-        std::vector<int> level (18, INF);
-        std::vector<bool> visited (18, false);
-        std::queue<int> q;
+        vector<int> level (18, INF);
+        vector<bool> visited (18, false);
+        queue<int> q;
         q.push(0); visited[0] = true; level[0] = 0;
 
         //Construct level graph
@@ -134,7 +136,7 @@ int main(){
 
     }
 
-    std::cout << maxBlood;
+    cout << maxBlood;
 
     return 0;
 
